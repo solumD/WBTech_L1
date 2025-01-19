@@ -35,7 +35,7 @@ func Writer(ctx context.Context) chan int64 {
 	return out
 }
 
-func Reader(in chan int64, ctx context.Context) {
+func Reader(in chan int64) {
 
 	for v := range in {
 		fmt.Println(v)
@@ -51,5 +51,5 @@ func main() {
 	defer cancel()
 
 	out := Writer(ctx)
-	Reader(out, ctx)
+	Reader(out)
 }
