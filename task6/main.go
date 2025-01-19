@@ -11,24 +11,17 @@ import (
 func Writer1(ctx context.Context) chan int64 {
 	out := make(chan int64)
 
-	done := make(chan struct{}) // done-канал вместо waitgroup
-
 	go func() {
+		defer close(out)
 		for {
 			select {
 			case <-ctx.Done():
-				done <- struct{}{} // сигнализируем о завершении горутины
 				fmt.Println("Closed Writer1 by context")
 				return
 			case out <- time.Now().Unix():
 				time.Sleep(500 * time.Millisecond)
 			}
 		}
-	}()
-
-	go func() {
-		<-done
-		close(out) // закрываем канал
 	}()
 
 	return out
@@ -45,24 +38,17 @@ func Reader1(in chan int64) {
 func Writer2(cancel chan struct{}) chan int64 {
 	out := make(chan int64)
 
-	done := make(chan struct{}) // done-канал вместо waitgroup
-
 	go func() {
+		defer close(out)
 		for {
 			select {
 			case <-cancel: // завершаем горутину при чтении пустой структуры
-				done <- struct{}{} // сигнализируем о завершении горутины
 				fmt.Println("Closed Writer2 by cancel-chan")
 				return
 			case out <- time.Now().Unix():
 				time.Sleep(500 * time.Millisecond)
 			}
 		}
-	}()
-
-	go func() {
-		<-done
-		close(out) // закрываем канал
 	}()
 
 	return out

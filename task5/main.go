@@ -13,23 +13,16 @@ import (
 func Writer(ctx context.Context) chan int64 {
 	out := make(chan int64)
 
-	done := make(chan struct{}) // done-канал вместо waitgroup
-
 	go func() {
+		defer close(out)
 		for {
 			select {
 			case <-ctx.Done():
-				done <- struct{}{} // сигнализируем о завершении горутины
 				return
 			case out <- time.Now().Unix():
 				time.Sleep(500 * time.Millisecond)
 			}
 		}
-	}()
-
-	go func() {
-		<-done
-		close(out) // закрываем канал
 	}()
 
 	return out
