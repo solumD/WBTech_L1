@@ -28,7 +28,7 @@ func PrintSquares(in chan int) {
 
 func main() {
 	nums := []int{2, 4, 6, 8, 10}
-	in := make(chan int)
+	in := make(chan int) // канал 1
 	go func() {
 		defer close(in)
 		for _, n := range nums {
@@ -36,6 +36,6 @@ func main() {
 		}
 	}()
 
-	out := Squares(in)
+	out := Squares(in) // канал 2
 	PrintSquares(out)
 }
