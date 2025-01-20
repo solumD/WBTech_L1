@@ -5,6 +5,10 @@ import (
 	"reflect"
 )
 
+/* Разработать программу, которая в рантайме способна
+определить тип переменной: int, string, bool, channel
+из переменной типа interface{}. */
+
 // через форматирование
 func GetTypeFmt(variable interface{}) {
 	fmt.Printf("Тип переменной: %T\n", variable)
