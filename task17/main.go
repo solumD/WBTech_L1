@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+/* Реализовать бинарный поиск встроенными методами языка. */
+
 // BinarySearch определяет индекс указанного значения,
 // и возвращает его, иначе возвращает -1
 func BinarySearch(arr []int, target int) int {
